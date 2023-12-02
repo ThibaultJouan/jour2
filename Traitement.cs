@@ -1,7 +1,12 @@
+using System.Text.RegularExpressions;
+
 class Traitement
 {
     public static int Part1(string input, int red, int green, int blue)
     {
+        Regex regRed = new Regex(@"(\d+) red");
+        Regex regBlue = new Regex(@"(\d+) blue");
+        Regex regGreen = new Regex(@"(\d+) green");
         int foundBlue = 0;
         int foundRed = 0;
         int foundGreen = 0;
@@ -10,29 +15,22 @@ class Traitement
 
         foreach(string s in buff)
         {
-            var truc = s.Trim();
-            var machin = truc.Split(',');
+            Match sRed = regRed.Match(s);
+            Match sBlue = regBlue.Match(s);
+            Match sGreen = regGreen.Match(s);
 
-            foreach(string t in machin)
+            if(sRed.Captures.Count > 0 && foundRed < int.Parse(sRed.Groups[1].Value))
             {
-                var final = t.Trim().Split(' ');
-
-                switch(final[1])
-                {
-                    case "blue":
-                        foundBlue = int.Parse(final[0]);
-                        break;
-                    case "red":
-                        foundRed = int.Parse(final[0]);
-                        break;
-                    case "green":
-                        foundGreen = int.Parse(final[0]);
-                        break;
-                    default:
-                        break;
-                }
+                foundRed = int.Parse(sRed.Groups[1].Value);
             }
-
+            if(sBlue.Captures.Count > 0 && foundBlue < int.Parse(sBlue.Groups[1].Value))
+            {
+                foundBlue = int.Parse(sBlue.Groups[1].Value);
+            }
+            if(sGreen.Captures.Count > 0 && foundGreen < int.Parse(sGreen.Groups[1].Value))
+            {
+                foundGreen = int.Parse(sGreen.Groups[1].Value);
+            }
             if(foundBlue > blue || foundGreen > green || foundRed > red)
             {
                 return 0;
@@ -40,7 +38,6 @@ class Traitement
             foundBlue = 0;
             foundRed = 0;
             foundGreen = 0;
-
         }
 
         var result = game[0].Split();
@@ -49,6 +46,9 @@ class Traitement
 
     public static int Part2(string input)
     {
+        Regex regRed = new Regex(@"(\d+) red");
+        Regex regBlue = new Regex(@"(\d+) blue");
+        Regex regGreen = new Regex(@"(\d+) green");
         int foundBlue = 0;
         int foundRed = 0;
         int foundGreen = 0;
@@ -57,36 +57,21 @@ class Traitement
 
         foreach(string s in buff)
         {
-            var truc = s.Trim();
-            var machin = truc.Split(',');
+            Match red = regRed.Match(s);
+            Match blue = regBlue.Match(s);
+            Match green = regGreen.Match(s);
 
-            foreach(string t in machin)
+            if(red.Captures.Count > 0 && foundRed < int.Parse(red.Groups[1].Value))
             {
-                var final = t.Trim().Split(' ');
-
-                switch(final[1])
-                {
-                    case "blue":
-                        if(int.Parse(final[0]) > foundBlue)
-                        {
-                            foundBlue = int.Parse(final[0]);
-                        }
-                        break;
-                    case "red":
-                        if(int.Parse(final[0]) > foundRed)
-                        {
-                            foundRed = int.Parse(final[0]);
-                        }
-                        break;
-                    case "green":
-                        if(int.Parse(final[0]) > foundGreen)
-                        {
-                            foundGreen = int.Parse(final[0]);
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                foundRed = int.Parse(red.Groups[1].Value);
+            }
+            if(blue.Captures.Count > 0 && foundBlue < int.Parse(blue.Groups[1].Value))
+            {
+                foundBlue = int.Parse(blue.Groups[1].Value);
+            }
+            if(green.Captures.Count > 0 && foundGreen < int.Parse(green.Groups[1].Value))
+            {
+                foundGreen = int.Parse(green.Groups[1].Value);
             }
         }
 
